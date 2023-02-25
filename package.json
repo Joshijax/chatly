@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "serve": "node index.js",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1"
+  }
+}
