@@ -1,14 +1,41 @@
+const express = require("express")
+const app = express()
 const { getConvoChats, saveChats } = require("./utils/firbase_utils.js");
-const server = require("http").createServer();
-const io = require("socket.io")(server, {
+
+// const io = require("socket.io")(server, {
+//   cors: {
+//     // origin: ["http://localhost:8080", "http://localhost:8081", "https://serverchatly.herokuapp.com/"],
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//     allowedHeaders: ["my-custom-header"],
+//     credentials: true,
+//   },
+// });
+
+const cors = require("cors")
+
+app.use(cors())
+
+const server = require("http").createServer(app);
+
+const {Server} = require("socket.io")
+
+
+app.get("/", (req, res)=>{
+  res.write("<h1> Chat server is running")
+  res.end()
+})
+
+const io = new Server(server, {
   cors: {
-    // origin: ["http://localhost:8080", "http://localhost:8081", "https://serverchatly.herokuapp.com/"],
-    origin: "*",
+    origin: "*", 
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
-  },
-});
+  }
+})
+
+
 
 io.on("connection", (socket) => {
   console.log("Client connected");
