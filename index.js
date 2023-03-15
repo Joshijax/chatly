@@ -2,7 +2,7 @@ const { getConvoChats, saveChats } = require("./utils/firbase_utils.js");
 const server = require("http").createServer();
 const io = require("socket.io")(server, {
   cors: {
-    origin: ["http://localhost:8080", "http://localhost:8081"],
+    origin: ["http://localhost:8080", "http://localhost:8081", "https://serverchatly.herokuapp.com/"],
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
