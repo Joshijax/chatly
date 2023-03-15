@@ -26,13 +26,25 @@ const {Server} = require("socket.io")
 //   res.end()
 // })
 
-// Add this middleware function to set the Access-Control-Allow-Origin header
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  })
+);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
 });
 
-const io = new Server(server)
+// const io = new Server(server)
 
 
 
