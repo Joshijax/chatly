@@ -21,19 +21,12 @@ const server = require("http").createServer(app);
 const {Server} = require("socket.io")
 
 
-app.get("/", (req, res)=>{
-  res.write("<h1> Chat server is running")
-  res.end()
-})
+// app.get("/", (req, res)=>{
+//   res.write("<h1> Chat server is running")
+//   res.end()
+// })
 
-const io = new Server(server, {
-  cors: {
-    origin: "*", 
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
-  }
-})
+const io = new Server(server)
 
 
 
