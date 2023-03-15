@@ -27,7 +27,8 @@ const {Server} = require("socket.io")
 // })
 
 app.use(cors({
-  origin: "*",
+  // origin: "*",
+  origin: 'http://localhost:8080',
   methods: ["GET", "POST"],
   allowedHeaders: ["my-custom-header"],
   credentials: true,
