@@ -1,3 +1,4 @@
+const { getConvoChats, saveChats } = require("./utils/firbase_utils.js");
 const server = require("http").createServer();
 const io = require("socket.io")(server, {
   cors: {
@@ -17,6 +18,7 @@ io.on("connection", (socket) => {
     const newMessage = {
       text: conversationId.user,
       type: "joined",
+      user: conversationId.user,
       createdAt: new Date(),
     };
     console.log(
@@ -29,7 +31,21 @@ io.on("connection", (socket) => {
     socket.leave(`conversation:${conversationId}`);
   });
 
-  socket.on("message", (data) => {
+  socket.on("requestAssistance", (data) => {
+    io.sockets.emit("assistanceRequested", data);
+    console.log(`Assistance requested: ${data}`);
+  });
+
+  socket.on("isSocketInConversation", (conversationRoom, callback) => {
+    const room = io.sockets.adapter.rooms.get(conversationRoom);
+    if (room && room.has(socket.id)) {
+      callback(true);
+    } else {
+      callback(false);
+    }
+  });
+
+  socket.on("message", async (data) => {
     const { conversationId, message, type, username } = data;
     // Save message to database
     // ...
@@ -38,10 +54,11 @@ io.on("connection", (socket) => {
     const newMessage = {
       text: message.text,
       type: type,
-      username: username,
+      user: username,
       createdAt: new Date(),
     };
     console.log(newMessage);
+    await saveChats(newMessage, conversationId);
     io.to(`conversation:${conversationId}`).emit("newMessage", newMessage);
     io.to(`conversation:${conversationId}`).emit("typing", false);
   });
