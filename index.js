@@ -26,20 +26,21 @@ const {Server} = require("socket.io")
 //   res.end()
 // })
 
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["my-custom-header"],
+  credentials: true,
+  exposedHeaders: ["Access-Control-Allow-Origin"]
+}));
 
 const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
     credentials: true,
+    exposedHeaders: ["Access-Control-Allow-Origin"]
   },
 });
 
