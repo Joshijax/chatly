@@ -25,13 +25,7 @@ const { Server } = require("socket.io");
 //   res.end()
 // })
 
-app.use(
-  cors({
-    // origin: "*",
-    origin: "http://localhost:8080",
-    methods: ["GET", "POST"],
-  })
-);
+app.use();
 
 const io = new Server(server, {
   cors: {
