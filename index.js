@@ -25,7 +25,7 @@ const { Server } = require("socket.io");
 //   res.end()
 // })
 
-app.use();
+app.use(cors());
 
 const io = new Server(server, {
   cors: {
