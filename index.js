@@ -32,12 +32,11 @@ const io = new Server(server, {
     origin: "*",
     methods: ["GET", "POST"],
   },
+  origins: "*:*",
+  matchOriginProtocol: true,
 });
 
 // const io = new Server(server)
-
-io.set("origins", "*:*");
-io.set("match origin protocol", true);
 
 io.on("connection", (socket) => {
   console.log("Client connected");
