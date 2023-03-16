@@ -36,6 +36,9 @@ const io = new Server(server, {
 
 // const io = new Server(server)
 
+io.set("origins", "*:*");
+io.set("match origin protocol", true);
+
 io.on("connection", (socket) => {
   console.log("Client connected");
 
