@@ -105,6 +105,10 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("Server listening on port 3000");
+// server.listen(3000, () => {
+//   console.log("Server listening on port 3000");
+// });
+
+server.listen(process.env.PORT || 3000, () => {
+  console.log(`Server running on port ${server.address().port}`);
 });
