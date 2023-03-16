@@ -27,6 +27,10 @@ const { Server } = require("socket.io");
 
 app.use(cors());
 
+app.get("/favicon.ico", (req, res) => {
+  res.sendStatus(204);
+});
+
 const io = new Server(server, {
   cors: {
     origin: "*",
