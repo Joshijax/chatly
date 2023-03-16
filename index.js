@@ -1,5 +1,5 @@
-const express = require("express")
-const app = express()
+const express = require("express");
+const app = express();
 const { getConvoChats, saveChats } = require("./utils/firbase_utils.js");
 
 // const io = require("socket.io")(server, {
@@ -12,42 +12,35 @@ const { getConvoChats, saveChats } = require("./utils/firbase_utils.js");
 //   },
 // });
 
-const cors = require("cors")
+const cors = require("cors");
 
-app.use(cors())
+app.use(cors());
 
 const server = require("http").createServer(app);
 
-const {Server} = require("socket.io")
-
+const { Server } = require("socket.io");
 
 // app.get("/", (req, res)=>{
 //   res.write("<h1> Chat server is running")
 //   res.end()
 // })
 
-app.use(cors({
-  // origin: "*",
-  origin: 'http://localhost:8080',
-  methods: ["GET", "POST"],
-  allowedHeaders: ["my-custom-header"],
-  credentials: true,
-  exposedHeaders: ["Access-Control-Allow-Origin"]
-}));
+app.use(
+  cors({
+    // origin: "*",
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"],
+  })
+);
 
 const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
-    exposedHeaders: ["Access-Control-Allow-Origin"]
   },
 });
 
 // const io = new Server(server)
-
-
 
 io.on("connection", (socket) => {
   console.log("Client connected");
