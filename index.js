@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const { getConvoChats, saveChats } = require("./utils/firbase_utils.js");
 
+const { Timestamp } = require("firebase/firestore");
+
 // const io = require("socket.io")(server, {
 //   cors: {
 //     // origin: ["http://localhost:8080", "http://localhost:8081", "https://serverchatly.herokuapp.com/"],
@@ -42,8 +44,32 @@ const io = new Server(server, {
 
 // const io = new Server(server)
 
+let customerSockets = [];
+let agentSockets = [];
+
 io.on("connection", (socket) => {
   console.log("Client connected");
+
+  // Emit the list of agent sockets to the Vue.js client
+  socket.emit("getAgents", agentSockets);
+
+  // Emit the list of customers sockets to the Vue.js client
+  socket.emit("getCustomers", customerSockets);
+
+  // Add connected user to the appropriate array
+  socket.on("userType", (userType) => {
+    console.log(userType);
+    if (userType.role === "agent") {
+      userType.socketId = socket.id;
+      agentSockets.push(userType);
+      console.log("agent Connect", userType);
+      io.emit("agentCount", agentSockets);
+    } else if (userType === "customer") {
+      customerSockets.push(socket.id);
+      console.log("customer Connect", socket.id);
+      io.emit("customerCount", customerSockets);
+    }
+  });
 
   socket.on("join", (conversationId) => {
     console.log(conversationId.user, "joined room", conversationId.id);
@@ -52,7 +78,7 @@ io.on("connection", (socket) => {
       text: conversationId.user,
       type: "joined",
       user: conversationId.user,
-      createdAt: new Date(),
+      createdAt: Timestamp.now(),
     };
     console.log(
       io.sockets.adapter.rooms.get(`conversation:${conversationId.id}`)
@@ -88,7 +114,7 @@ io.on("connection", (socket) => {
       text: message.text,
       type: type,
       user: username,
-      createdAt: new Date(),
+      createdAt: Timestamp.now(),
     };
     console.log(newMessage);
     await saveChats(newMessage, conversationId);
@@ -100,8 +126,28 @@ io.on("connection", (socket) => {
     socket.to(`conversation:${obj.id}`).emit("typing", obj);
   });
 
+  socket.on("timeUp", (obj) => {
+    console.log("time up from server");
+    socket.to(`conversation:${obj}`).emit("timeUp", obj);
+  });
+
   socket.on("disconnect", () => {
     console.log("Client disconnected");
+
+    // Remove disconnected user from the appropriate array
+    const agentIndex = agentSockets.findIndex(
+      (agent) => agent.socketId === socket.id
+    );
+    if (agentIndex !== -1) {
+      agentSockets.splice(agentIndex, 1);
+      io.emit("agentCount", agentSockets.length);
+    } else {
+      const customerIndex = customerSockets.indexOf(socket.id);
+      if (customerIndex !== -1) {
+        customerSockets.splice(customerIndex, 1);
+        io.emit("customerCount", customerSockets.length);
+      }
+    }
   });
 });
 
