@@ -48,7 +48,7 @@ let customerSockets = [];
 let agentSockets = [];
 
 io.on("connection", (socket) => {
-  console.log("Client connected");
+  console.log("Client connectedd");
 
   // Emit the list of agent sockets to the Vue.js client
   socket.emit("getAgents", agentSockets);
