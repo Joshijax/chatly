@@ -22,10 +22,10 @@ const server = require("http").createServer(app);
 
 const { Server } = require("socket.io");
 
-// app.get("/", (req, res)=>{
-//   res.write("<h1> Chat server is running")
-//   res.end()
-// })
+app.get("/", (req, res) => {
+  res.write("<h1> Chat server is running");
+  res.end();
+});
 
 app.use(cors());
 
