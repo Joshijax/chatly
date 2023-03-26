@@ -95,6 +95,11 @@ io.on("connection", (socket) => {
     console.log(`Assistance requested: ${data}`);
   });
 
+  socket.on("requestAccepted", (data) => {
+    io.sockets.emit("requestAccepted", data);
+    console.log(`requestAccepted: ${data}`);
+  });
+
   socket.on("isSocketInConversation", (conversationRoom, callback) => {
     const room = io.sockets.adapter.rooms.get(conversationRoom);
     if (room && room.has(socket.id)) {
