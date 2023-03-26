@@ -98,6 +98,7 @@ io.on("connection", (socket) => {
   socket.on("requestAccepted", (data) => {
     io.sockets.emit("requestAccepted", data);
     io.to(`conversation:${data.conversationId}`).emit("requestAccepted", data);
+    io.sockets.emit("requestAcceptedAgent", data);
     console.log(`requestAccepted: ${data}`);
   });
 
