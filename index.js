@@ -123,6 +123,7 @@ io.on("connection", (socket) => {
       user: username,
       createdAt: Timestamp.now(),
       isUser,
+      conversationId,
     };
     console.log(newMessage);
     await saveChats(newMessage, conversationId);

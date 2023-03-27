@@ -8,6 +8,7 @@ const {
   where,
   addDoc,
   serverTimestamp,
+  updateDoc,
   orderBy,
 } = require("firebase/firestore");
 const db = StartFirebase();
@@ -72,11 +73,12 @@ const saveChats = async (message, id) => {
 
     // Update the conversation document to indicate that a new message has been added
     if (isUser) {
-      await updateDoc(parentDocRef, { userNewmessage: true });
-    } else {
       await updateDoc(parentDocRef, { agentNewmessage: true });
+      console.log("Conversation document updated with agentNewmessage: true");
+    } else {
+      await updateDoc(parentDocRef, { userNewmessage: true });
+      console.log("Conversation document updated with userNewmessage: true");
     }
-    console.log("Conversation document updated with newmessage: true");
   });
 };
 
