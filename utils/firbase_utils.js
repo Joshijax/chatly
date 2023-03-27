@@ -57,7 +57,8 @@ const saveChats = async (message, id) => {
   const parentDocRef = doc(db, "conversation", id);
   const subcollectionRef = collection(parentDocRef, "chat");
 
-  const { text, type, user } = message;
+  const { text, type, user, isUser } = message;
+
   const newMessage = {
     text: text,
     type: type,
@@ -70,7 +71,11 @@ const saveChats = async (message, id) => {
     console.log("Document written with ID: ", res.id);
 
     // Update the conversation document to indicate that a new message has been added
-    await updateDoc(parentDocRef, { newmessage: true });
+    if (isUser) {
+      await updateDoc(parentDocRef, { userNewmessage: true });
+    } else {
+      await updateDoc(parentDocRef, { agentNewmessage: true });
+    }
     console.log("Conversation document updated with newmessage: true");
   });
 };

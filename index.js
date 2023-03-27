@@ -112,7 +112,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", async (data) => {
-    const { conversationId, message, type, username } = data;
+    const { conversationId, message, type, username, isUser } = data;
     // Save message to database
     // ...
     console.log("...sending");
@@ -122,6 +122,7 @@ io.on("connection", (socket) => {
       type: type,
       user: username,
       createdAt: Timestamp.now(),
+      isUser,
     };
     console.log(newMessage);
     await saveChats(newMessage, conversationId);
