@@ -28,13 +28,35 @@ const createConversationId = async () => {
   return val;
 };
 
-const saveChats = async (message, id) => {
-  // Create a reference to the parent document that contains the sub-collection
-  const parentDocRef = doc(db, "conversation", id);
-  console.log(id, "iddd");
+// const saveChats = async (message, id) => {
+//   // Create a reference to the parent document that contains the sub-collection
+//   const parentDocRef = doc(db, "conversation", id);
+//   console.log(id, "iddd");
 
-  // Create a reference to the sub-collection and order by "createdAt" in descending order
+//   // Create a reference to the sub-collection and order by "createdAt" in descending order
+//   const subcollectionRef = collection(parentDocRef, "chat");
+//   const { text, type, user } = message;
+//   const newMessage = {
+//     text: text,
+//     type: type,
+//     user: user,
+//     createdAt: serverTimestamp(),
+//   };
+//   console.log("here it here", newMessage);
+//   // Add a new document to the sub-collection with the current timestamp
+//   await addDoc(subcollectionRef, newMessage).then((res) => {
+//     // console.log(res, "this is the resspin");
+//     console.log("Document written with ID: ", res.id);
+//     val = true;
+//   });
+// };
+
+const saveChats = async (message, id) => {
+  console.log(message, id, "trying to save");
+
+  const parentDocRef = doc(db, "conversation", id);
   const subcollectionRef = collection(parentDocRef, "chat");
+
   const { text, type, user } = message;
   const newMessage = {
     text: text,
@@ -42,12 +64,14 @@ const saveChats = async (message, id) => {
     user: user,
     createdAt: serverTimestamp(),
   };
-  console.log("here it here", newMessage);
+
   // Add a new document to the sub-collection with the current timestamp
-  await addDoc(subcollectionRef, newMessage).then((res) => {
-    // console.log(res, "this is the resspin");
+  await addDoc(subcollectionRef, newMessage).then(async (res) => {
     console.log("Document written with ID: ", res.id);
-    val = true;
+
+    // Update the conversation document to indicate that a new message has been added
+    await updateDoc(parentDocRef, { newmessage: true });
+    console.log("Conversation document updated with newmessage: true");
   });
 };
 
