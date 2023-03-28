@@ -73,10 +73,16 @@ const saveChats = async (message, id) => {
 
     // Update the conversation document to indicate that a new message has been added
     if (isUser) {
-      await updateDoc(parentDocRef, { agentNewmessage: true });
+      await updateDoc(parentDocRef, {
+        agentNewmessage: true,
+        lastMsgTime: serverTimestamp(),
+      });
       console.log("Conversation document updated with agentNewmessage: true");
     } else {
-      await updateDoc(parentDocRef, { userNewmessage: true });
+      await updateDoc(parentDocRef, {
+        userNewmessage: true,
+        lastMsgTime: serverTimestamp(),
+      });
       console.log("Conversation document updated with userNewmessage: true");
     }
   });
