@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const { getConvoChats, saveChats } = require("./utils/firbase_utils.js");
-
+const openai = require("openai");
 const { Timestamp } = require("firebase/firestore");
 
 // const io = require("socket.io")(server, {
@@ -129,6 +129,40 @@ io.on("connection", (socket) => {
     await saveChats(newMessage, conversationId);
     io.to(`conversation:${conversationId}`).emit("newMessage", newMessage);
     io.to(`conversation:${conversationId}`).emit("typing", false);
+  });
+
+  // Handle incoming voice messages from the client
+  socket.on("voiceMessage", async (data) => {
+    const { conversationId, type, message, username, isUser } = data;
+
+    // Save the voice message to the database
+    const newMessage = {
+      text: message,
+      type: type,
+      user: username,
+      createdAt: Timestamp.now(),
+      isUser,
+      conversationId,
+    };
+    await saveChats(newMessage, conversationId);
+
+    // Broadcast the voice message to all clients in the conversation room
+    io.to(`conversation:${conversationId}`).emit("newMessage", newMessage);
+  });
+
+  socket.on("image", async (data) => {
+    const { conversationId, type, message, username, isUser } = data;
+    // Save the voice message to the database
+    const newMessage = {
+      text: message,
+      type: type,
+      user: username,
+      createdAt: Timestamp.now(),
+      isUser,
+      conversationId,
+    };
+    await saveChats(newMessage, conversationId);
+    io.to(`conversation:${conversationId}`).emit("newMessage", newMessage);
   });
 
   socket.on("typing", (obj) => {

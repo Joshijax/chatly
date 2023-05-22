@@ -1,0 +1,104 @@
+{
+  "data": [
+    {
+      "text": "Hi, can you tell me how to track my order?",
+      "labels": [
+        {
+          "label": "track order",
+          "start": 25,
+          "end": 36
+        }
+      ]
+    },
+    {
+      "text": "I want to return an item. What's the process?",
+      "labels": [
+        {
+          "label": "return item",
+          "start": 12,
+          "end": 18
+        }
+      ]
+    },
+    {
+      "text": "What's the status of my order?",
+      "labels": [
+        {
+          "label": "order status",
+          "start": 0,
+          "end": 12
+        }
+      ]
+    },
+    {
+      "text": "How do I cancel an order?",
+      "labels": [
+        {
+          "label": "cancel order",
+          "start": 11,
+          "end": 23
+        }
+      ]
+    },
+    {
+      "text": "Can I change the shipping address for my order?",
+      "labels": [
+        {
+          "label": "change shipping address",
+          "start": 4,
+          "end": 28
+        }
+      ]
+    },
+    {
+      "text": "How long will it take for my order to arrive?",
+      "labels": [
+        {
+          "label": "delivery time",
+          "start": 0,
+          "end": 14
+        }
+      ]
+    },
+    {
+      "text": "Can I get a refund for my order?",
+      "labels": [
+        {
+          "label": "refund",
+          "start": 13,
+          "end": 19
+        }
+      ]
+    },
+    {
+      "text": "How can I contact customer service?",
+      "labels": [
+        {
+          "label": "contact customer service",
+          "start": 0,
+          "end": 25
+        }
+      ]
+    },
+    {
+      "text": "Do you have any discount codes available?",
+      "labels": [
+        {
+          "label": "discount codes",
+          "start": 23,
+          "end": 36
+        }
+      ]
+    },
+    {
+      "text": "What's the difference between the Basic and Premium plans?",
+      "labels": [
+        {
+          "label": "product comparison",
+          "start": 25,
+          "end": 44
+        }
+      ]
+    }
+  ]
+}
